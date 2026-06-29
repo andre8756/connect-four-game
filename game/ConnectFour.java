@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class ConnectFour {
     private final int linhas = 6;
@@ -9,7 +10,6 @@ public class ConnectFour {
         char[][] tabuleiro = new char[linhas][colunas];
         popular(tabuleiro);
         imprimirTabuleiro(tabuleiro);
-        perguntarCor(sc);
         jogar(sc, tabuleiro);
     }
 
@@ -51,31 +51,49 @@ public class ConnectFour {
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
-        System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
-        int colunaEscolhida = sc.nextInt();
+
         boolean jogoAcabou = false;
 
-        while (!jogoAcabou) {
-        try {
-            for (int i = 0; i < tabuleiro.length; i++) {
-                if (tabuleiro[colunaEscolhida -1][i] == 'B') {
-                    tabuleiro[colunaEscolhida -1][i] = corUsuario;
+        while (jogoAcabou == false) {
+            System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
+            int colunaUsuario = sc.nextInt();
+            if (colunaUsuario < 1 || colunaUsuario > 7)
+                System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",colunaUsuario);
+
+            for (int i = tabuleiro.length - 1; i >= 0; i--) {
+                if (tabuleiro[i][colunaUsuario - 1] == 'B') {
+                    tabuleiro[i][colunaUsuario - 1] = corUsuario;
                     inserido = true;
-                    return;    
+                    break;
                 }
             }
-            if(!inserido){
-                System.err.print("A coluna inserida já está cheia! Por favor tente novamente e selecione uma coluna que possua um lugar vazio para adicionar a ficha");
+            if (!inserido) {
+                System.err.print(
+                        "A coluna inserida já está cheia! Por favor tente novamente e selecione uma coluna que possua um lugar vazio para adicionar a ficha");
                 return;
             }
+            imprimirTabuleiro(tabuleiro);
 
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",colunaEscolhida);
+
+            // jogada do computador
+            inserido = false;
+            System.out.println("Agora é a vez do computador jogar");
+            Random random = new Random();
+            char corComputador = (corUsuario == 'V') ? 'A' : 'V';
+            int colunaComputador = random.nextInt(1, 8);
+            System.out.printf("A coluna escolhida pelo computador foi a %d°", colunaComputador);
+            for (int i = tabuleiro.length - 1; i >= 0; i--) {
+                if (tabuleiro[i][colunaComputador - 1] == 'B') {
+                    tabuleiro[i][colunaComputador - 1] = corComputador;
+                    inserido = true;
+                    break;
+                }
+            }
+            System.out.println("Computador fez sua jogada:  ");
+            imprimirTabuleiro(tabuleiro);
+            //validacao se alguem ganhou, ai declara jogoacabou = true
         }
-
-
     }
-}
     // -----------------------------------------------------------------
 
     // Métodos que vão ajudar com os requisitos funcionais
