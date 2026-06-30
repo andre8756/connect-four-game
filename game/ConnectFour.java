@@ -112,9 +112,11 @@ public class ConnectFour {
     }
 
     public boolean jogoAcabou(char[][] tabuleiro, char corUsuario){
-        int pontos = 0;
+        int pontos;
 
+        // Horizontal
         for (int i = 0; i < linhas; i++) {
+            pontos = 0;
             for (int j = 0; j < colunas; j++) {
                 if(tabuleiro[i][j] == corUsuario){
                     pontos++;
@@ -127,8 +129,12 @@ public class ConnectFour {
             }
         }
 
-        for (int i = 0; i < linhas; i++) {
-            for (int j = 0; j < colunas; j++) {
+        //Diagonal
+        for (int i = 0; i < colunas; i++) {
+            pontos = 0;
+
+            
+            for (int j = 0; j < linhas; j++) {
                 if(tabuleiro[j][i] == corUsuario){
                     pontos++;
                 } else{
@@ -140,14 +146,28 @@ public class ConnectFour {
             }
         }
 
-        for (int i = 0; i < linhas; i++) {
-            for (int j = 0; j < colunas; j++) {
-                if(tabuleiro[i][j] == corUsuario){
-                    pontos++;
-                } else{
-                    pontos = 0;
+        // Diagonal Decrescente
+        for (int i = 0; i <= linhas - 4; i++) {
+            for (int j = 0; j <= colunas - 4; j++) {
+                if (tabuleiro[i][j] == corUsuario &&
+                    tabuleiro[i + 1][j + 1] == corUsuario &&
+                    tabuleiro[i + 2][j + 2] == corUsuario &&
+                    tabuleiro[i + 3][j + 3] == corUsuario) {
+
+                    return true;
                 }
-                if(pontos == 4){
+            }
+        }
+
+        // Diagonal Crescente
+        for (int i = 3; i < linhas; i++) {
+            for (int j = 0; j <= colunas - 4; j++) {
+
+                if (tabuleiro[i][j] == corUsuario &&
+                    tabuleiro[i - 1][j + 1] == corUsuario &&
+                    tabuleiro[i - 2][j + 2] == corUsuario &&
+                    tabuleiro[i - 3][j + 3] == corUsuario) {
+
                     return true;
                 }
             }
