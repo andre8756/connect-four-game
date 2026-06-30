@@ -46,17 +46,24 @@ public class ConnectFour {
     }
 
     private void jogar(Scanner sc, char[][] tabuleiro) {
+        char digitoImprimirTabuleiro = 'p';
         boolean inserido = false;
         char corUsuario = perguntarCor(sc);
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
+        System.out.println("Caso queira imprimir o tabuleiro, é só digitar p. A qualquer momento");
 
         boolean jogoAcabou = false;
 
         while (jogoAcabou == false) {
             System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
             int colunaUsuario = sc.nextInt();
+            if(colunaUsuario == digitoImprimirTabuleiro){
+                imprimirTabuleiro(tabuleiro);
+                return;
+            }
+
             if (colunaUsuario < 1 || colunaUsuario > 7){
                 System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",colunaUsuario);
                 System.out.println();
@@ -68,8 +75,9 @@ public class ConnectFour {
                     tabuleiro[i][colunaUsuario - 1] = corUsuario;
                     inserido = true;
                     break;
-                }
+                }//falta validacao se a coluna esta cheia
             }
+
             if (!inserido) {
                 System.err.print(
                         "A coluna inserida já está cheia! Por favor tente novamente e selecione uma coluna que possua um lugar vazio para adicionar a ficha");
@@ -91,7 +99,7 @@ public class ConnectFour {
                     inserido = true;
                     break;
                 }
-            }
+            }//falta validacao se a coluna esta cheia
             System.out.println("Computador fez sua jogada:  ");
             imprimirTabuleiro(tabuleiro);
 
@@ -100,7 +108,6 @@ public class ConnectFour {
                 break;
             }
 
-            //validacao se alguem ganhou, ai declara jogoacabou = true
         }
     }
 
@@ -151,8 +158,6 @@ public class ConnectFour {
     }
 
     // -----------------------------------------------------------------
-
-    // Métodos que vão ajudar com os requisitos funcionais
 
     // Main
     public static void main(String[] args) {
