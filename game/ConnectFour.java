@@ -57,8 +57,11 @@ public class ConnectFour {
         while (jogoAcabou == false) {
             System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
             int colunaUsuario = sc.nextInt();
-            if (colunaUsuario < 1 || colunaUsuario > 7)
+            if (colunaUsuario < 1 || colunaUsuario > 7){
                 System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",colunaUsuario);
+                System.out.println();
+                continue;
+            }
 
             for (int i = tabuleiro.length - 1; i >= 0; i--) {
                 if (tabuleiro[i][colunaUsuario - 1] == 'B') {
@@ -91,9 +94,62 @@ public class ConnectFour {
             }
             System.out.println("Computador fez sua jogada:  ");
             imprimirTabuleiro(tabuleiro);
+
+            if(jogoAcabou(tabuleiro, corUsuario)){
+                System.out.println("ACABOU!!");
+                break;
+            }
+
             //validacao se alguem ganhou, ai declara jogoacabou = true
         }
     }
+
+    public boolean jogoAcabou(char[][] tabuleiro, char corUsuario){
+        int pontos = 0;
+
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if(tabuleiro[i][j] == corUsuario){
+                    pontos++;
+                } else{
+                    pontos = 0;
+                }
+                if(pontos == 4){
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if(tabuleiro[j][i] == corUsuario){
+                    pontos++;
+                } else{
+                    pontos = 0;
+                }
+                if(pontos == 4){
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if(tabuleiro[i][j] == corUsuario){
+                    pontos++;
+                } else{
+                    pontos = 0;
+                }
+                if(pontos == 4){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
     // -----------------------------------------------------------------
 
     // Métodos que vão ajudar com os requisitos funcionais
