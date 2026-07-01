@@ -7,12 +7,12 @@ public class ConnectFour {
     private final int digitoImprimirTabuleiro = 99;
 
     public ConnectFour() {
-        Scanner sc = new Scanner(System.in);
+        Scanner teclado = new Scanner(System.in);
         char[][] tabuleiro = new char[linhas][colunas];
         Random random = new Random();
         popular(tabuleiro);
         imprimirTabuleiro(tabuleiro);
-        jogar(sc, tabuleiro, random);
+        jogar(teclado, tabuleiro, random);
     }
 
     // Inicializacao
@@ -40,18 +40,18 @@ public class ConnectFour {
 
     // Todos os requisitos funcionais
 
-    private char perguntarCor(Scanner sc) {
+    private char perguntarCor(Scanner teclado) {
         System.out.println("Escolha sua cor! Digite V para vermelho ou A para azul");
-        char cor = sc.next().toUpperCase().charAt(0);
+        char cor = teclado.next().toUpperCase().charAt(0);
         while (cor != 'A' && cor != 'V') {
             System.out.println("Escolha sua cor! Digite V para vermelho ou A para azul");
-            cor = sc.next().toUpperCase().charAt(0);
+            cor = teclado.next().toUpperCase().charAt(0);
         }
         return cor;
     }
 
-    private void jogar(Scanner sc, char[][] tabuleiro, Random random) {
-        char corUsuario = perguntarCor(sc);
+    private void jogar(Scanner teclado, char[][] tabuleiro, Random random) {
+        char corUsuario = perguntarCor(teclado);
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
@@ -63,7 +63,7 @@ public class ConnectFour {
         // Jogada
         while (!jogoAcabou) {
             System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
-            int colunaUsuario = sc.nextInt();
+            int colunaUsuario = teclado.nextInt();
 
             if (verificarSeUsuarioQuerImprimirTabela(colunaUsuario, digitoImprimirTabuleiro)) {
                 imprimirTabuleiro(tabuleiro);
@@ -100,7 +100,7 @@ public class ConnectFour {
                 System.out.println();
                 System.out.println("Acabou, jogador venceuu!!!!");
                 imprimirTabuleiro(tabuleiro);
-                validarJogoCotinua(sc, tabuleiro, random);
+                validarJogoCotinua(teclado, tabuleiro, random);
                 break;
             }
 
@@ -110,7 +110,7 @@ public class ConnectFour {
                 System.out.println();
                 System.out.println("Acabou, houve empate!!!");
                 imprimirTabuleiro(tabuleiro);
-                validarJogoCotinua(sc, tabuleiro, random);
+                validarJogoCotinua(teclado, tabuleiro, random);
                 break;
             }
 
@@ -146,7 +146,7 @@ public class ConnectFour {
                 System.out.println();
                 System.out.println();
                 System.out.println("Vitória do computador :( !!!");
-                validarJogoCotinua(sc, tabuleiro, random);
+                validarJogoCotinua(teclado, tabuleiro, random);
                 break;
             }
 
@@ -156,7 +156,7 @@ public class ConnectFour {
                 System.out.println();
                 System.out.println("Acabou, houve empate!!!");
                 imprimirTabuleiro(tabuleiro);
-                validarJogoCotinua(sc, tabuleiro, random);
+                validarJogoCotinua(teclado, tabuleiro, random);
                 break;
             }
         }
@@ -256,16 +256,16 @@ public class ConnectFour {
         return false;
     }
 
-    public void validarJogoCotinua(Scanner sc, char[][] tabuleiro, Random random){
+    public void validarJogoCotinua(Scanner teclado, char[][] tabuleiro, Random random){
         char continuar;
         System.out.println();
         System.out.println();
         System.out.println("Deseja continuar jogando (s/n)??");
-        continuar = sc.next().toUpperCase().charAt(0);
+        continuar = teclado.next().toUpperCase().charAt(0);
         if(continuar == 'S'){
             popular(tabuleiro);
             imprimirTabuleiro(tabuleiro);
-            jogar(sc, tabuleiro, random);
+            jogar(teclado, tabuleiro, random);
         }
 
         System.out.println("Jogo encerrado!");
@@ -273,12 +273,8 @@ public class ConnectFour {
     }
 
 
-    // -----------------------------------------------------------------
-
     // Main
     public static void main(String[] args) {
         new ConnectFour();
     }
-    // -----------------------------------------------------------------
-
 }
