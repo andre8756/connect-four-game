@@ -1,3 +1,5 @@
+//Trabalho feito por Lorenzo Giusepe Maiola e André Heriberto Schmitt
+
 import java.util.Scanner;
 import java.util.Random;
 
@@ -32,7 +34,7 @@ public class ConnectFour {
         System.out.println();
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
-            System.out.print(" " + tabuleiro[i][j]);
+                System.out.print(" " + tabuleiro[i][j]);
             }
             System.out.println();
         }
@@ -61,12 +63,20 @@ public class ConnectFour {
                 digitoImprimirTabuleiro);
         System.out.println();
         boolean jogoAcabou = false;
-
+        char teste = 'a';
+        int colunaUsuario;
         // Jogada
         while (!jogoAcabou) {
+            colunaUsuario = 0;
             System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
-            int colunaUsuario = teclado.nextInt();
+            teste = teclado.next().charAt(0);
 
+            while ((teste < '1' || teste > '7') && teste != digitoImprimirTabuleiro) {
+                System.out.println("Dígito inváldio! Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
+                teste = teclado.next().charAt(0);
+            }
+
+            colunaUsuario = teste - '0';
             if (verificarSeUsuarioQuerImprimirTabela(colunaUsuario, digitoImprimirTabuleiro)) {
                 imprimirTabuleiro(tabuleiro);
                 continue;
@@ -106,8 +116,8 @@ public class ConnectFour {
                 break;
             }
 
-            // Verifica se houve empate 
-            if(verificaEmpate(tabuleiro)){
+            // Verifica se houve empate
+            if (verificaEmpate(tabuleiro)) {
                 System.out.println();
                 System.out.println();
                 System.out.println("Acabou, houve empate!!!");
@@ -142,7 +152,6 @@ public class ConnectFour {
             System.out.println("Computador fez sua jogada:  ");
             imprimirTabuleiro(tabuleiro);
 
-            
             // Valida se o computador ganhou
             if (jogoAcabou(tabuleiro, corComputador)) {
                 System.out.println();
@@ -153,7 +162,7 @@ public class ConnectFour {
             }
 
             // Verifica se houve empate
-            if(verificaEmpate(tabuleiro)){
+            if (verificaEmpate(tabuleiro)) {
                 System.out.println();
                 System.out.println();
                 System.out.println("Acabou, houve empate!!!");
@@ -240,7 +249,7 @@ public class ConnectFour {
     }
 
     // Verifica se houve empate após a jogada
-    public boolean verificaEmpate(char[][] tabuleiro){
+    public boolean verificaEmpate(char[][] tabuleiro) {
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
                 if (tabuleiro[i][j] == 'B') {
@@ -258,23 +267,20 @@ public class ConnectFour {
         return false;
     }
 
-    public void validarJogoCotinua(Scanner teclado, char[][] tabuleiro, Random random){
+    public void validarJogoCotinua(Scanner teclado, char[][] tabuleiro, Random random) {
         char continuar;
         System.out.println();
         System.out.println();
         System.out.println("Deseja continuar jogando (s/n)??");
         continuar = teclado.next().toUpperCase().charAt(0);
-        if(continuar == 'S'){
-            popular(tabuleiro);
-            imprimirTabuleiro(tabuleiro);
-            jogar(teclado, tabuleiro, random);
+        if (continuar == 'S') {
+            new ConnectFour();
         }
 
         System.out.println();
         System.out.println("Jogo encerrado!");
         System.exit(0);
     }
-
 
     // Main
     public static void main(String[] args) {
