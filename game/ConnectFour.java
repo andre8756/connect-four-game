@@ -29,12 +29,14 @@ public class ConnectFour {
 
     // Métodos Principais
     private void imprimirTabuleiro(char[][] tabuleiro) {
+        System.out.println();
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
-            System.out.print(tabuleiro[i][j] + " ");
+            System.out.print(" " + tabuleiro[i][j]);
             }
             System.out.println();
         }
+        System.out.println();
     }
     // -----------------------------------------------------------------
 
@@ -55,7 +57,7 @@ public class ConnectFour {
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
-        System.out.printf("Caso queira imprimir o tabuleiro, é só digitar %d. A qualquer momento",
+        System.out.printf("Caso queira imprimir o tabuleiro, é só digitar %d a qualquer momento",
                 digitoImprimirTabuleiro);
         System.out.println();
         boolean jogoAcabou = false;
@@ -268,6 +270,7 @@ public class ConnectFour {
             jogar(teclado, tabuleiro, random);
         }
 
+        System.out.println();
         System.out.println("Jogo encerrado!");
         System.exit(0);
     }
