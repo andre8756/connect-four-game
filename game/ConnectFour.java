@@ -43,67 +43,74 @@ public class ConnectFour {
         System.out.println("Escolha sua cor! Digite V para vermelho ou A para azul");
         char cor = sc.next().toUpperCase().charAt(0);
         return cor;
+
     }
 
     private void jogar(Scanner sc, char[][] tabuleiro) {
-        char digitoImprimirTabuleiro = 'p';
-        boolean inserido = false;
+        int digitoImprimirTabuleiro = 99;
         char corUsuario = perguntarCor(sc);
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
-        System.out.println("Caso queira imprimir o tabuleiro, é só digitar p. A qualquer momento");
+        System.out.println("Caso queira imprimir o tabuleiro, é só digitar 99 a qualquer momento");
 
         boolean jogoAcabou = false;
 
-        while (jogoAcabou == false) {
+        while (!jogoAcabou) {
             System.out.println("Onde deseja adicionar uma ficha? Digite 1,2,3,4,5,6 ou 7 para escolher a coluna");
             int colunaUsuario = sc.nextInt();
-            if(colunaUsuario == digitoImprimirTabuleiro){
-                imprimirTabuleiro(tabuleiro);
-                return;
-            }
 
-            if (colunaUsuario < 1 || colunaUsuario > 7){
-                System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",colunaUsuario);
+            if (verificarSeUsuarioQuerImprimirTabela(colunaUsuario, digitoImprimirTabuleiro)){
+                    imprimirTabuleiro(tabuleiro);
+                continue;
+            }
+            
+            if (colunaUsuario < 1 || colunaUsuario > 7 && colunaUsuario != digitoImprimirTabuleiro) {
+                System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",
+                        colunaUsuario);
                 System.out.println();
                 continue;
             }
 
-            for (int i = tabuleiro.length - 1; i >= 0; i--) {
-                if (tabuleiro[i][colunaUsuario - 1] == 'B') {
-                    tabuleiro[i][colunaUsuario - 1] = corUsuario;
-                    inserido = true;
-                    break;
-                }//falta validacao se a coluna esta cheia
-            }
+            if (validarSeColunaEstaVazia(colunaUsuario, tabuleiro)) {
 
-            if (!inserido) {
+                for (int i = tabuleiro.length - 1; i >= 0; i--) {
+                    if (tabuleiro[i][colunaUsuario - 1] == 'B') {
+                        tabuleiro[i][colunaUsuario - 1] = corUsuario;
+                        break;
+                    }
+                }
+            } else {
                 System.err.print(
                         "A coluna inserida já está cheia! Por favor tente novamente e selecione uma coluna que possua um lugar vazio para adicionar a ficha");
                 return;
             }
+
             imprimirTabuleiro(tabuleiro);
 
-
             // jogada do computador
-            inserido = false;
             System.out.println("Agora é a vez do computador jogar");
             Random random = new Random();
             char corComputador = (corUsuario == 'V') ? 'A' : 'V';
             int colunaComputador = random.nextInt(1, 8);
+            while (!validarSeColunaEstaVazia(colunaComputador, tabuleiro)) {
+                colunaComputador = random.nextInt(1, 8);
+                if (validarSeColunaEstaVazia(colunaComputador, tabuleiro))
+                    break;
+            }
+
             System.out.printf("A coluna escolhida pelo computador foi a %d°", colunaComputador);
+
             for (int i = tabuleiro.length - 1; i >= 0; i--) {
                 if (tabuleiro[i][colunaComputador - 1] == 'B') {
                     tabuleiro[i][colunaComputador - 1] = corComputador;
-                    inserido = true;
                     break;
                 }
-            }//falta validacao se a coluna esta cheia
+            }
             System.out.println("Computador fez sua jogada:  ");
             imprimirTabuleiro(tabuleiro);
 
-            if(jogoAcabou(tabuleiro, corUsuario)){
+            if (jogoAcabou(tabuleiro, corUsuario)) {
                 System.out.println("ACABOU!!");
                 break;
             }
@@ -111,36 +118,35 @@ public class ConnectFour {
         }
     }
 
-    public boolean jogoAcabou(char[][] tabuleiro, char corUsuario){
+    public boolean jogoAcabou(char[][] tabuleiro, char corUsuario) {
         int pontos;
 
         // Horizontal
         for (int i = 0; i < linhas; i++) {
             pontos = 0;
             for (int j = 0; j < colunas; j++) {
-                if(tabuleiro[i][j] == corUsuario){
+                if (tabuleiro[i][j] == corUsuario) {
                     pontos++;
-                } else{
+                } else {
                     pontos = 0;
                 }
-                if(pontos == 4){
+                if (pontos == 4) {
                     return true;
                 }
             }
         }
 
-        //Diagonal
+        // Diagonal
         for (int i = 0; i < colunas; i++) {
             pontos = 0;
 
-            
             for (int j = 0; j < linhas; j++) {
-                if(tabuleiro[j][i] == corUsuario){
+                if (tabuleiro[j][i] == corUsuario) {
                     pontos++;
-                } else{
+                } else {
                     pontos = 0;
                 }
-                if(pontos == 4){
+                if (pontos == 4) {
                     return true;
                 }
             }
@@ -150,9 +156,9 @@ public class ConnectFour {
         for (int i = 0; i <= linhas - 4; i++) {
             for (int j = 0; j <= colunas - 4; j++) {
                 if (tabuleiro[i][j] == corUsuario &&
-                    tabuleiro[i + 1][j + 1] == corUsuario &&
-                    tabuleiro[i + 2][j + 2] == corUsuario &&
-                    tabuleiro[i + 3][j + 3] == corUsuario) {
+                        tabuleiro[i + 1][j + 1] == corUsuario &&
+                        tabuleiro[i + 2][j + 2] == corUsuario &&
+                        tabuleiro[i + 3][j + 3] == corUsuario) {
 
                     return true;
                 }
@@ -164,9 +170,9 @@ public class ConnectFour {
             for (int j = 0; j <= colunas - 4; j++) {
 
                 if (tabuleiro[i][j] == corUsuario &&
-                    tabuleiro[i - 1][j + 1] == corUsuario &&
-                    tabuleiro[i - 2][j + 2] == corUsuario &&
-                    tabuleiro[i - 3][j + 3] == corUsuario) {
+                        tabuleiro[i - 1][j + 1] == corUsuario &&
+                        tabuleiro[i - 2][j + 2] == corUsuario &&
+                        tabuleiro[i - 3][j + 3] == corUsuario) {
 
                     return true;
                 }
@@ -175,6 +181,21 @@ public class ConnectFour {
 
         return false;
 
+    }
+
+    private boolean validarSeColunaEstaVazia(int numeroColuna, char[][] tabuleiro) {
+        for (int i = 0; i < tabuleiro.length; i++) {
+            if (tabuleiro[i][numeroColuna] == 'B') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean verificarSeUsuarioQuerImprimirTabela(int entrada, int digitoQueImprimeTabela) {
+        if (digitoQueImprimeTabela == entrada)
+            return true;
+        return false;
     }
 
     // -----------------------------------------------------------------
