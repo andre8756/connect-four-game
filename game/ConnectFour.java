@@ -96,12 +96,25 @@ public class ConnectFour {
 
             // Valida se o jogador ganhou
             if (jogoAcabou(tabuleiro, corUsuario)) {
+                System.out.println();
+                System.out.println();
                 System.out.println("Acabou, jogador venceuu!!!!");
                 imprimirTabuleiro(tabuleiro);
                 break;
             }
 
+            // Verifica se houve empate 
+            if(verificaEmpate(tabuleiro)){
+                System.out.println();
+                System.out.println();
+                System.out.println("Acabou, houve empate!!!");
+                imprimirTabuleiro(tabuleiro);
+                break;
+            }
+
             imprimirTabuleiro(tabuleiro);
+            System.out.println();
+            System.out.println();
 
             // jogada do computador
             System.out.println("Agora é a vez do computador jogar");
@@ -112,6 +125,7 @@ public class ConnectFour {
                 if (espacoColuna(tabuleiro, colunaComputador))
                     break;
             }
+
             System.out.printf("A coluna escolhida pelo computador foi a %d°", colunaComputador);
             for (int i = tabuleiro.length - 1; i >= 0; i--) {
                 if (tabuleiro[i][colunaComputador - 1] == 'B') {
@@ -120,11 +134,25 @@ public class ConnectFour {
                 }
             }
 
+            // Imprimindo a jogada do computador
             System.out.println("Computador fez sua jogada:  ");
             imprimirTabuleiro(tabuleiro);
 
+            
+            // Valida se o computador ganhou
             if (jogoAcabou(tabuleiro, corComputador)) {
+                System.out.println();
+                System.out.println();
                 System.out.println("Vitória do computador :( !!!");
+                break;
+            }
+
+            // Verifica se houve empate
+            if(verificaEmpate(tabuleiro)){
+                System.out.println();
+                System.out.println();
+                System.out.println("Acabou, houve empate!!!");
+                imprimirTabuleiro(tabuleiro);
                 break;
             }
         }
@@ -205,6 +233,19 @@ public class ConnectFour {
         return false;
     }
 
+    // Verifica se houve empate após a jogada
+    public boolean verificaEmpate(char[][] tabuleiro){
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if (tabuleiro[i][j] == 'B') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Verifica se o usuário quer imprimir o tabuleiro
     private boolean verificarSeUsuarioQuerImprimirTabela(int entrada, int digitoQueImprimeTabela) {
         if (digitoQueImprimeTabela == entrada)
             return true;
