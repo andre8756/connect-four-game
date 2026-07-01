@@ -9,9 +9,10 @@ public class ConnectFour {
     public ConnectFour() {
         Scanner sc = new Scanner(System.in);
         char[][] tabuleiro = new char[linhas][colunas];
+        Random random = new Random();
         popular(tabuleiro);
         imprimirTabuleiro(tabuleiro);
-        jogar(sc, tabuleiro);
+        jogar(sc, tabuleiro, random);
     }
 
     // Inicializacao
@@ -43,15 +44,20 @@ public class ConnectFour {
     private char perguntarCor(Scanner sc) {
         System.out.println("Escolha sua cor! Digite V para vermelho ou A para azul");
         char cor = sc.next().toUpperCase().charAt(0);
+        while (cor != 'A' && cor != 'V') {
+            System.out.println("Escolha sua cor! Digite V para vermelho ou A para azul");
+            cor = sc.next().toUpperCase().charAt(0);
+        }
         return cor;
     }
 
-    private void jogar(Scanner sc, char[][] tabuleiro) {
+    private void jogar(Scanner sc, char[][] tabuleiro, Random random) {
         char corUsuario = perguntarCor(sc);
         System.out.println("Seja bem vindo ao ConnectFour!");
         System.out.println("O tabuleiro se encontra desse jeito:");
         imprimirTabuleiro(tabuleiro);
-        System.out.printf("Caso queira imprimir o tabuleiro, é só digitar %d. A qualquer momento",digitoImprimirTabuleiro);
+        System.out.printf("Caso queira imprimir o tabuleiro, é só digitar %d. A qualquer momento",
+                digitoImprimirTabuleiro);
         System.out.println();
         boolean jogoAcabou = false;
 
@@ -66,7 +72,7 @@ public class ConnectFour {
             }
 
             // Valida se o numero escolhido é uma coluna existente
-            if (colunaUsuario < 1 || colunaUsuario > 7 && colunaUsuario != digitoImprimirTabuleiro) {
+            if ((colunaUsuario < 1 || colunaUsuario > 7) && colunaUsuario != digitoImprimirTabuleiro) {
                 System.out.printf("O número escolhido %d não pode ser usado! Tente novamente e se atente às mensagens",
                         colunaUsuario);
                 System.out.println();
@@ -99,7 +105,6 @@ public class ConnectFour {
 
             // jogada do computador
             System.out.println("Agora é a vez do computador jogar");
-            Random random = new Random();
             char corComputador = (corUsuario == 'V') ? 'A' : 'V';
             int colunaComputador = random.nextInt(1, 8);
             while (!espacoColuna(tabuleiro, colunaComputador)) {
@@ -144,19 +149,20 @@ public class ConnectFour {
             }
         }
 
-        //Vertical
-        for(int i = 0; i < linhas; i ++){
+        // Vertical
+        for (int i = 0; i < colunas; i++) {
             pontos = 0;
-            for(int j = 0; j < linhas; j++)
-                if(tabuleiro[j][i] == corUsuario){
+            for (int j = 0; j < linhas; j++) {
+                if (tabuleiro[j][i] == corUsuario) {
                     pontos++;
                 } else {
                     pontos = 0;
                 }
-                if(pontos == 4){
+                if (pontos == 4) {
                     return true;
                 }
             }
+        }
 
         // Diagonal Decrescente
         for (int i = 0; i <= linhas - 4; i++) {
